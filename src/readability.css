@@ -1,0 +1,160 @@
+/* Readable supporting text and comfortable touch targets across screens. */
+:root {
+  --muted: #65745e;
+}
+.source,
+.subtle,
+.timeline-entry > span,
+.timeline-entry small,
+.criteria-preview small,
+.proof-tag,
+.evidence-meta small,
+.sync-time,
+.ship-stats span,
+.receipt-kicker,
+.usage > span,
+footer span,
+footer small {
+  color: #68775e;
+  font-size: 11px;
+}
+.page-heading p,
+.section-heading p,
+.choose-card > p,
+.agent-note p,
+.step,
+.task-row strong,
+.evidence-panel textarea,
+.proof-row strong {
+  font-size: 13px;
+}
+.proof-row p,
+.proof-success p,
+.notice,
+.criteria-preview > div:not(.section-label),
+.mission-foot span,
+.timeline-entry strong,
+.timeline-summary > span,
+.energy-panel label,
+.field-label,
+.energy-options button,
+.section-label,
+.mission-context,
+.receipt-card p,
+.settings-page label {
+  font-size: 12px;
+  color: #5d7052;
+}
+.text-btn {
+  font-size: 12px;
+  color: #526c47;
+  min-height: 32px;
+}
+.eyebrow {
+  color: #536b4a;
+}
+.demo-banner {
+  font-size: 11px;
+}
+.proof-tag {
+  font-size: 10px;
+}
+.sample-actions > span {
+  font-size: 11px;
+  color: #65775a;
+}
+.sample-actions button {
+  min-height: 38px;
+  font-size: 11px;
+}
+.primary,
+.secondary {
+  font-size: 13px;
+}
+.event-manager {
+  margin-bottom: 12px;
+}
+.event-manager > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+  gap: 8px;
+}
+.event-manager > div > span {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 950px) and (min-width: 701px) {
+  .context-column {
+    grid-template-columns: 1fr;
+  }
+  .mission-foot {
+    flex-wrap: wrap;
+  }
+  .page-heading {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 700px) {
+  .demo-banner {
+    font-size: 10px;
+  }
+  .topbar {
+    padding: 0 12px;
+  }
+  .topbar > div {
+    gap: 5px;
+  }
+  .top-actions .text-btn {
+    font-size: 10px;
+  }
+  .mission-foot {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .mission-foot span {
+    font-size: 10px;
+  }
+  .task-row {
+    flex-wrap: wrap;
+  }
+  .task-row > div {
+    min-width: 120px;
+  }
+  .criteria-preview > div:not(.section-label) {
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+  .criteria-preview small {
+    font-size: 10px;
+  }
+  .timeline-entry small {
+    font-size: 11px;
+  }
+  .energy-options button {
+    min-height: 64px;
+  }
+  .task-row strong,
+  .step,
+  .agent-note p {
+    font-size: 12px;
+  }
+  .mission-context {
+    font-size: 11px;
+  }
+  .mission-context > span:last-child {
+    font-size: 10px;
+  }
+  .page-heading p {
+    font-size: 12px;
+  }
+  .top-actions .icon-btn {
+    padding: 5px;
+  }
+  nav button {
+    font-size: 10px;
+  }
+  .card-title h2 {
+    font-size: 14px;
+  }
+}

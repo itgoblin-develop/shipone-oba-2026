@@ -1,0 +1,9 @@
+node_modules/
+dist/
+release/
+.env*
+!.env.example
+.sites-runtime/
+*.log
+test-results/
+work/
