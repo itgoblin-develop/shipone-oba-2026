@@ -81,6 +81,7 @@ export type AppState = {
 };
 export type Settings = {
   hasOpenAI: boolean;
+  keySource: "stored" | "environment" | "none";
   hasNotion: boolean;
   hasGoogle: boolean;
   model: string;

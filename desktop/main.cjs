@@ -80,9 +80,14 @@ function settings() {
     });
   return {
     hasOpenAI: Boolean(s.openaiKey || process.env.OPENAI_API_KEY),
+    keySource: s.openaiKey
+      ? "stored"
+      : process.env.OPENAI_API_KEY
+        ? "environment"
+        : "none",
     hasNotion: Boolean(s.notionToken),
     hasGoogle: Boolean(s.googleTokens),
-    model: c.model || "gpt-4.1-mini",
+    model: c.model || process.env.OPENAI_MODEL || "gpt-6.1-sol",
     notionSource: c.notionSource || "",
     googleClientId: c.googleClientId || "",
     secureStorage: safeStorage.isEncryptionAvailable(),

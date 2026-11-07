@@ -63,6 +63,17 @@ PKCE, state 검증, localhost loopback callback을 사용합니다. `calendar.ev
 
 ## 개발
 
+### .env로 실제 OpenAI 연결
+
+저장소 루트의 `.env`에 `OPENAI_API_KEY=발급받은키`를 넣습니다. `.env.example`은 형식만 담은 예제입니다. `.env`는 Git과 설치 패키지에서 제외되며, 앱 설정에 저장한 키와 달리 개발용 로컬 파일입니다.
+
+```powershell
+npm run check:openai
+npm run desktop:installed
+```
+
+`check:openai`는 개인 데이터 대신 테스트용 작업으로 실제 API를 호출하고 응답 구조와 토큰 사용량을 확인합니다. `desktop:installed`는 `.env`를 읽어 이미 설치한 Windows 앱을 실행합니다. 열려 있는 ShipOne은 먼저 종료해야 새 환경 변수가 반영됩니다. 시작 메뉴로 직접 실행할 때는 앱의 연결 및 설정에 키를 저장하는 방법을 사용하세요. `desktop`과 `desktop:dev`도 `.env`를 읽습니다.
+
 Node.js 22.12 이상을 권장합니다. 검증 환경은 Windows 11, Node 24.19입니다.
 
 ```powershell

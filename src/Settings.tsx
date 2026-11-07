@@ -94,7 +94,11 @@ export default function Settings({
             <KeyRound />
             <h2>OpenAI</h2>
             <span className={"pill " + (status?.hasOpenAI ? "green" : "")}>
-              {status?.hasOpenAI ? "키 저장됨" : "연결 필요"}
+              {status?.keySource === "environment"
+                ? "환경 변수 연결"
+                : status?.hasOpenAI
+                  ? "키 저장됨"
+                  : "연결 필요"}
             </span>
           </div>
           <p>
@@ -107,10 +111,10 @@ export default function Settings({
             "password",
             "sk-… · 기존 키는 표시하지 않음",
           )}
-          {field("model", "사용 모델", "text", "gpt-4.1-mini")}
+          {field("model", "사용 모델", "text", "gpt-6.1-sol")}
           <small>
-            키는 Windows 보안 저장소로 암호화합니다. 웹 데모와 Git에는 포함되지
-            않습니다.
+            앱에서 저장한 키는 Windows 보안 저장소로 암호화합니다. 개발용 .env는
+            로컬 파일이며 Git과 배포에서 제외합니다.
             {status &&
               (status.secureStorage
                 ? " 이 PC의 암호화 저장소를 사용할 수 있습니다."

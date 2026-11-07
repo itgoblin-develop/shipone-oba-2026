@@ -44,6 +44,9 @@ import { initialState, demoPlan } from "./data";
 import { Goblin, Modal, Empty, Source, time } from "./components";
 import Settings from "./Settings";
 import Review from "./Review";
+import { nativeDesktop } from './web-api';
+import Companion from './Companion';
+import WebSettings from './WebSettings';
 
 type Tab = "today" | "tasks" | "review" | "history" | "settings";
 const asLocal = (s: string) => {
@@ -66,7 +69,7 @@ function loadBrowser(key: string, fallback: AppState) {
   }
 }
 export default function App() {
-  const desktop = !!window.shipone;
+  const desktop = nativeDesktop;
   const [sample, setSample] = useState(!desktop),
     [state, setState] = useState<AppState>(() => initialState(!desktop)),
     [loaded, setLoaded] = useState(false),
@@ -193,14 +196,14 @@ export default function App() {
             : "먼저 오늘 할 일을 하나 추가해주세요.",
         );
       let plan: PlanResult;
-      if (sample && ranked[0].task.id === "sample-launch")
+      if (sample && !useAI && ranked[0].task.id === "sample-launch")
         plan = {
           ...demoPlan,
           reason: `지정한 구간에서 ${ranked[0].slot.minutes}분의 연속 시간이 있어요. 45분짜리 소개 페이지를 마무리하고 완료 조건을 검사해요.`,
         } as PlanResult;
-      else if (desktop && !sample && useAI)
+      else if (useAI)
         plan = await window.shipone!.plan({
-          feasibleTasks: ranked.map((r: { task: Task }) => r.task),
+          feasibleTasks: ranked.slice(0,20).map((r: { task: Task }) => r.task),
           slots,
           maxMinutes: longest,
           energy: state.energy,
@@ -302,7 +305,7 @@ export default function App() {
     setBusy(true);
     setError("");
     try {
-      const r = sample
+      const r = sample && mission.planSource === '체험 안내'
         ? {
             suggestion:
               "현재 완료 조건은 유지해요. 먼저 빠진 사전 신청 안내를 한 문장으로 추가한 뒤 다시 검증해보세요.",
@@ -411,7 +414,7 @@ export default function App() {
                   ? "샘플 체험 중"
                   : desktop
                     ? "이 PC에 안전하게 저장"
-                    : "웹 체험판"}
+                    : "이 브라우저에 저장"}
               </small>
             </div>
             <span className="online-dot" />
@@ -438,9 +441,9 @@ export default function App() {
               <SettingsIcon size={18} />
             </button>
             <span className={"mode-badge " + (sample ? "demo" : "")}>
-              {sample ? "DEMO · 샘플 체험" : "DESKTOP · 실제 작업"}
+              {sample ? "DEMO · 샘플 데이터" : desktop ? "DESKTOP · 실제 작업" : "WEB · 내 작업"}
             </span>
-            {desktop ? (
+            {true ? (
               <button
                 className="text-btn"
                 disabled={busy}
@@ -462,9 +465,7 @@ export default function App() {
             <div className="demo-banner">
               <Sparkles size={16} />
               <span>
-                <strong>설치 없이 핵심 흐름을 체험하세요.</strong> 미리 작성한
-                계획과 샘플 일정입니다. 실제 AI 호출·계정 연결은 Windows 앱에서
-                사용합니다.
+                <strong>샘플 데이터로 바로 시작하세요.</strong> AI 추천은 실제 OpenAI 호출입니다. 무료로 흐름만 살펴보려면 ‘샘플 시나리오 체험’을 선택하세요.
               </span>
               <button onClick={() => setModal("reset")}>
                 체험 초기화
@@ -563,13 +564,13 @@ export default function App() {
                         오늘의 하나 골라줘
                         <ArrowRight size={18} />
                       </button>
-                      {desktop && !sample && (
+                      {(
                         <button
                           className="text-btn local-plan"
                           disabled={busy}
                           onClick={() => recommend(false)}
                         >
-                          API 없이 시간·우선순위로 추천
+                          {sample ? '샘플 시나리오 체험 · API 사용 없음' : 'API 없이 시간·우선순위로 추천'}
                         </button>
                       )}
                       <div className="mission-foot">
@@ -1240,7 +1241,8 @@ export default function App() {
               )}
             </>
           )}
-          {tab === "settings" && (
+          {tab === "settings" && !desktop && <WebSettings notify={setToast} onEvents={(events,at,source)=>setState(s=>({...s,events:[...s.events.filter(e=>e.source!==source),...events],calendarSyncedAt:at}))}/>}
+          {tab === "settings" && desktop && (
             <Settings
               sample={sample}
               notify={setToast}
@@ -1280,10 +1282,11 @@ export default function App() {
           )}
           <footer>
             ShipOne <span>Choose one. Prove it. Ship it.</span>
-            <small>OBA 2026 · v0.1</small>
+            <small><a href="./pitch/">발표자료</a> · <a href="./video/">60초 영상</a> · OBA 2026</small>
           </footer>
         </div>
       </main>
+      <Companion mission={mission} elapsed={elapsed} onOpen={()=>setTab(mission?.status==='review'?'review':'today')}/>
       {toast && (
         <div role="status" className="toast">
           <CheckCircle2 size={18} />

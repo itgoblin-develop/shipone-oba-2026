@@ -1,4 +1,5 @@
 import React from "react";
+import './web-api';
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./styles.css";

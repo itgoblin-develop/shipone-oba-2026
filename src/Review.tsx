@@ -11,6 +11,7 @@ import type { Mission, Evidence } from "./types";
 import { evaluate, signature, canShip } from "../shared/core.mjs";
 import { sampleEvidenceBroken, sampleEvidenceFixed } from "./data";
 import { CheckIcon, time } from "./components";
+import { nativeDesktop } from './web-api';
 export default function Review({
   mission,
   sample,
@@ -119,7 +120,7 @@ export default function Review({
           </button>
           <button
             aria-pressed={kind === "url"}
-            disabled={busy || !window.shipone || sample}
+            disabled={busy || !nativeDesktop || sample}
             onClick={() => changeKind("url")}
           >
             <Globe size={16} />
@@ -127,7 +128,7 @@ export default function Review({
           </button>
           <button
             aria-pressed={kind === "file"}
-            disabled={busy || !window.shipone || sample}
+            disabled={busy}
             onClick={() => changeKind("file")}
           >
             <Upload size={16} />

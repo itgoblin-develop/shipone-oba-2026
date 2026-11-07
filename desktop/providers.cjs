@@ -80,6 +80,7 @@ async function aiCall(secrets, model, kind, input, onUsage = () => {}) {
       instructions: system,
       input: JSON.stringify(input),
       max_output_tokens: 2500,
+      ...(/^gpt-[56]/.test(model) ? { reasoning: { effort: "low" } } : {}),
       store: false,
       text: {
         format: { type: "json_schema", name: kind, strict: true, schema },
