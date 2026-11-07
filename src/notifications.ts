@@ -11,6 +11,7 @@ export async function enableNotifications() {
   await navigator.serviceWorker.register(new URL("./sw.js", location.href), {
     scope: "./",
   });
+  await navigator.serviceWorker.ready;
   localStorage.setItem("shipone-notifications", "on");
   await sendNotification(
     "ShipOne 알림이 켜졌어요",
