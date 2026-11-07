@@ -90,4 +90,4 @@ export const sampleEvidenceBroken =
   "ShipOne은 오늘 끝낼 하나를 고르고 끝까지 함께하는 개인 에이전트입니다. 흩어진 할 일과 일정을 연결하고, 지금 할 수 있는 Mission을 제안합니다. 작업이 끝나면 완료 조건과 결과물을 대조해 근거가 담긴 완료 기록을 남깁니다.";
 export const sampleEvidenceFixed =
   sampleEvidenceBroken +
-  "\n\n사전 신청: 소개 페이지 하단의 신청 버튼을 눌러 이메일을 남겨주세요. Windows 버전부터 차례로 초대합니다.";
+  "\n\n사전 신청: 소개 페이지 하단의 신청 버튼을 눌러 이메일을 남겨주세요. 새 기능 소식과 다음 체험 일정을 안내합니다.";

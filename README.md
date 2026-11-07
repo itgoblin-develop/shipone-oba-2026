@@ -1,110 +1,50 @@
-# ShipOne
+# ShipOne — 끝났나요?
 
-**오늘의 하나를 고르고, 근거와 함께 끝내는 개인 에이전트.**
+오늘 끝낼 하나를 고르고, 결과물로 마무리를 확인하는 AI 도깨비. OBA Weekendthon 2026 신규 프로젝트입니다.
 
-OBA Weekendthon 2026 신규 프로젝트입니다. 기존 저장소 코드를 재사용하지 않았습니다. Windows 설치형 앱이 제품이고, 웹은 계정 없이 제품 흐름을 보여주는 체험판입니다.
+- 웹앱: https://itgoblin-develop.github.io/shipone-oba-2026/
+- 발표자료: https://itgoblin-develop.github.io/shipone-oba-2026/pitch/
+- 60초 영상: https://itgoblin-develop.github.io/shipone-oba-2026/video/
+- MP4: https://itgoblin-develop.github.io/shipone-oba-2026/media/shipone-demo-60s.mp4
 
-## 빠른 시작
+## 바로 체험
 
-1. 제공된 `ShipOne-Setup-0.1.0.exe`로 Windows x64 앱을 설치합니다.
-2. 오른쪽 위 **샘플로 체험하기**를 선택하면 키 없이 시연할 수 있습니다.
-3. 실제 작업은 **내 작업으로 돌아가기** → **할 일 추가**로 시작합니다.
-4. **연결 및 설정**에 OpenAI API 키를 입력합니다. 기본 모델은 `gpt-4.1-mini`이며 변경할 수 있습니다.
-5. **오늘의 하나 골라줘** → 완료 조건 검토 → **이 하나에 집중하기** → **끝났는지 확인하기** 순서로 사용합니다.
+로그인·키 입력 없이 엽니다. **오늘의 하나 골라줘**는 실제 OpenAI를 호출합니다. **샘플 시나리오 체험**은 API 없이 재현 가능한 완료 검증 흐름을 보여줍니다. **내 작업으로 돌아가기**에서 자기 할 일과 일정을 추가합니다.
 
-API 없이 쓰려면 별도의 **API 없이 시간·우선순위로 추천** 버튼을 선택합니다. 이 결과는 “규칙 기반 추천”으로 표시됩니다. AI 실패를 샘플 결과로 바꾸지 않습니다.
+계획 확인 → 집중 시작 → 결과물 제출 → 누락 검사 → 수정 → 완료 기록. 오른쪽 아래 도깨비를 눌러 작업에 대해 질문하거나 기기 음성을 켤 수 있습니다.
 
-## 무엇을 만들었나요?
+## 구현
 
-- 할 일 수집, 예상시간·우선순위·에너지 입력
-- 겹치는 일정을 병합하고 실제 연속 빈 시간에 맞는 작업만 후보로 선정
-- OpenAI Responses API의 구조화 출력으로 Mission·이유·단계·완료 조건 생성
-- 완료 조건 잠금, 진행 체크, 떠오른 생각 주차, 막힘에 대한 AI 제안
-- 직접 선택한 파일, 붙여넣은 텍스트, 공개 URL의 근거 검사
-- 자동 통과 / 실패 / 확인 불가 / 사용자 확인을 명확히 구분
-- 검사 뒤 근거 수정 시 이전 통과 무효화
-- SHA-256·확인 시각·검사 결과가 담긴 완료 기록, Markdown 내보내기
-- 로컬 기록 저장, 샘플 체험 데이터 분리, Windows 알림
-- Notion 지정 데이터 소스 읽기와 Google Calendar 읽기 전용 OAuth 어댑터
-- Google 연결 전 사용할 수 있는 일정 JSON 파일 가져오기
+- PC·모바일 반응형 React 웹앱, 기기 내 브라우저 저장
+- 연속된 빈 시간·우선순위·에너지에 맞는 작업 후보 선정
+- OpenAI Responses API, gpt-6.1-sol, 구조화된 실행 단계·완료 조건·막힘 제안
+- 플로팅 도깨비, 맥락을 전달하는 AI 질문, 선택형 기기 TTS
+- 집중 시간 종료·완료 알림 (권한을 켜고 웹앱이 열려 있을 때)
+- 텍스트/직접 선택한 파일의 문구·분량 검사와 사용자 확인 분리
+- 수정 시 기존 통과 무효화, SHA-256·검사 시점·완료 기록, Markdown 내보내기
+- 일정 JSON 가져오기, Google Calendar·Notion 연결 버튼과 준비 중 안내
 
-**검증 범위:** 문구 포함·최소 글자 수·HTTP 응답은 자동 검사합니다. URL은 서버 응답 텍스트를 검사하며 로그인, 동적 화면, 버튼 클릭, 폼 제출 성공까지 보장하지 않습니다. 주관적 품질과 실제 기능 동작은 사용자 확인으로 기록합니다.
+문구·분량 검사는 기능 정상 동작이나 품질 전체를 보증하지 않습니다. 주관적 결과는 사용자 확인으로 남깁니다. 웹 공개 URL 자동 검사는 제공하지 않습니다.
 
-## OpenAI 크레딧은 어디에 쓰나요?
+## 데이터와 배포
 
-추천 시 작업 후보, 가능한 시간 구간, 에너지, 최근 완료 요약을 전달합니다. 막힘 해결 시 현재 Mission과 사용자가 적은 장애물을 전달합니다. `store:false`로 호출하며 실제 응답의 입력·출력 토큰 사용량을 누적 표시합니다. 로컬 문구·파일 검사는 토큰을 쓰지 않습니다.
+화면은 GitHub Pages, API는 Cloudflare Worker 기반 Sites 서버입니다. OpenAI 키는 서버 비밀값이며 저장소·브라우저에 포함하지 않습니다. store:false로 요청합니다. 추천에는 작업·시간·최근 완료 요약, 질문에는 현재 작업과 질문이 전달됩니다. 결과물 검사는 브라우저에서 수행합니다.
 
-브라우저 데모에는 API 키 입력이 비활성화되어 있습니다. Windows 앱에서만 OS `safeStorage`로 키를 암호화하고 메인 프로세스에서 호출합니다. 결과물 파일 본문은 검사를 위해 OpenAI로 보내지 않습니다.
+공개 API는 요청 크기·동시 요청·IP별 시간당 20회·Worker 인스턴스당 1,000회 제한을 적용합니다. 메모리 제한은 분산/재시작 환경에서 전역 비용 상한이 아닙니다. 운영 전 지속형 할당량과 계정별 과금 제한이 필요합니다.
 
-## 계정 연결
+## 해커톤 범위
 
-### Notion
-
-1. Notion의 연결 관리에서 Internal Integration을 만듭니다.
-2. 읽을 데이터베이스를 해당 연결에 공유합니다.
-3. 앱에 토큰과 데이터베이스 ID 또는 데이터 소스 ID를 입력합니다.
-4. 설정을 저장하고 **작업 불러오기**를 누릅니다.
-
-최대 100개를 읽고, 더 있으면 첫 100개라는 안내를 표시합니다. 제목, 상태, 날짜, 숫자형 예상시간을 읽습니다. 예상시간 속성 이름은 “분”, “시간”, “minutes”, “duration”을 포함하며 단위는 분입니다. 없으면 30분으로 가정합니다. 데이터 소스가 여러 개면 직접 소스 ID를 지정합니다. 원본은 수정하지 않습니다.
-
-### Google Calendar
-
-1. Google Cloud 프로젝트에서 Calendar API를 활성화합니다.
-2. OAuth 동의 화면을 설정하고 **Desktop app** OAuth 클라이언트를 생성합니다.
-3. 앱에 Client ID와 해당 Client Secret을 저장합니다.
-4. **Google 계정 연결**을 눌러 시스템 브라우저에서 로그인합니다.
-5. **일정 새로고침**으로 오늘 기본 캘린더의 일정을 읽습니다.
-
-PKCE, state 검증, localhost loopback callback을 사용합니다. `calendar.events.readonly`만 요청합니다. 테스트 모드에서는 본인 이메일을 테스트 사용자로 등록해야 할 수 있습니다. 현재 개인 데모 배포이므로 제공자 OAuth 클라이언트가 내장되어 있지 않습니다. 공개 서비스 출시 전에는 운영자 OAuth 앱과 검증 절차를 준비해야 합니다.
-
-### 일정 파일
-
-`docs/examples/calendar.json` 형식의 `title/start/end` 배열을 가져올 수 있습니다. 시간에는 시간대를 포함하세요. 예제의 날짜는 시연용이며 실제 날짜로 바꿔 사용합니다. 파일을 다시 읽으면 이전 파일 일정만 대체합니다.
+웹 Notion·Google OAuth 실연결, 로그인, 기기 동기화, 탭이 닫힌 뒤 서버 푸시, APK/IPA는 미구현입니다. 연결 버튼은 준비 중임을 안내하며 연결 성공으로 표시하지 않습니다. Windows v0.1.0은 초기 프로토타입이며 이번 제출 제품은 v0.2 웹앱입니다.
 
 ## 개발
 
-### .env로 실제 OpenAI 연결
+Node 24 기준. 개발자만 .env.example을 참고하여 로컬 .env를 설정합니다. 방문자는 키를 넣지 않습니다.
 
-저장소 루트의 `.env`에 `OPENAI_API_KEY=발급받은키`를 넣습니다. `.env.example`은 형식만 담은 예제입니다. `.env`는 Git과 설치 패키지에서 제외되며, 앱 설정에 저장한 키와 달리 개발용 로컬 파일입니다.
+1. npm ci
+2. npm run dev
+3. 별도 터미널: npm run dev:api
+4. npm test / npm run build / npm run check:openai
 
-```powershell
-npm run check:openai
-npm run desktop:installed
-```
+src는 UI, shared/core.mjs는 일정/검증 계약, worker/index.mjs는 서버 API, public/pitch와 public/video는 제출 자료입니다. desktop은 이전 설치형 코드를 보존합니다. GitHub Actions가 main을 Pages로 배포하며 API 변경은 Sites에 별도 배포합니다.
 
-`check:openai`는 개인 데이터 대신 테스트용 작업으로 실제 API를 호출하고 응답 구조와 토큰 사용량을 확인합니다. `desktop:installed`는 `.env`를 읽어 이미 설치한 Windows 앱을 실행합니다. 열려 있는 ShipOne은 먼저 종료해야 새 환경 변수가 반영됩니다. 시작 메뉴로 직접 실행할 때는 앱의 연결 및 설정에 키를 저장하는 방법을 사용하세요. `desktop`과 `desktop:dev`도 `.env`를 읽습니다.
-
-Node.js 22.12 이상을 권장합니다. 검증 환경은 Windows 11, Node 24.19입니다.
-
-```powershell
-npm ci
-npm run dev
-# 별도 터미널에서 설치형 개발 창
-npm run desktop:dev
-```
-
-```powershell
-npm test
-npm run build
-npm run desktop
-npm run dist:win
-```
-
-Electron 바이너리가 설치되지 않았다면 `node node_modules/electron/install.js`를 실행합니다. 설치 파일은 `release/`에 생성됩니다. 코드 서명 인증서는 포함되어 있지 않습니다.
-
-## 구조
-
-- `src/`: React/TypeScript 화면과 상태 흐름
-- `shared/core.mjs`: 일정 계산·추천 후보·검증·완료 기록 계약
-- `desktop/main.cjs`: 제한된 IPC, 저장소, 파일 선택, 내보내기
-- `desktop/providers.cjs`: OpenAI/Notion/Google 어댑터
-- `desktop/network.cjs`: 공개 URL 검사, 사설 주소 차단, DNS 고정
-- `tests/`: 핵심 로직 및 제공자 계약 테스트
-- `docs/SUBMISSION.md`: 제출 설명과 2분 시연 대본
-- `docs/VALIDATION.md`: 실제 검증 결과와 미검증 항목
-
-키와 로컬 작업 데이터는 Electron userData 폴더에 보관하며 소스 저장소에는 넣지 않습니다. 테스트 시 `SHIPONE_TEST_DATA`로 독립 저장 경로를 지정할 수 있습니다.
-
-## 다음 제품 단계
-
-Windows 개인 베타 → 공유 작업 계약을 사용하는 Android/iOS 클라이언트 → 사용자 계정과 암호화된 동기화 → 운영자 제공 OAuth 연결 → 사용자가 허용한 정기 체크인 순으로 확장합니다. APK/IPA, 모바일 푸시와 클라우드 동기화는 이번 빌드에 포함되지 않습니다.
+자동 테스트 24개와 실제 OpenAI 추천·질문, 누락→수정→완료 UI 흐름을 확인했습니다. docs/VALIDATION.md에 한계를 함께 기록했습니다.

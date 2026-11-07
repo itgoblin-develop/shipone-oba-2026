@@ -1957,5 +1957,228 @@ dialog::backdrop {
   }
 }
 /* A quiet, screen-local companion. */
-.companion{position:fixed;right:24px;bottom:24px;z-index:40;display:flex;flex-direction:column;align-items:flex-end;gap:8px;pointer-events:none}
-.companion>*{pointer-events:auto}.companion-pet{border:0;background:transparent;display:flex;align-items:center;flex-direction:column;padding:0;cursor:pointer}.companion-pet .goblin{width:76px;height:76px;filter:drop-shadow(0 8px 10px #193d3625);animation:pet-breathe 4s ease-in-out infinite}.companion-pet span{display:flex;gap:4px;background:#193d36;color:#fffdf6;border-radius:20px;padding:5px 10px;font-size:11px;font-weight:700}.companion-bubble{width:300px;background:#fffdf6;border:1px solid #d4ddcf;border-radius:20px 20px 4px 20px;padding:18px;box-shadow:0 16px 50px #193d3620}.companion-head{display:flex;align-items:center;gap:8px}.companion-head strong{font-size:13px;flex:1}.companion-head button{border:0;background:transparent;color:#193d36;padding:4px;cursor:pointer}.companion-bubble p{font-size:13px;line-height:1.7;margin:12px 0;max-height:185px;overflow:auto;white-space:pre-line}.companion-action{display:flex;align-items:center;gap:6px;border:0;background:#edf3e8;padding:8px 12px;border-radius:8px;color:#193d36;font-size:12px;cursor:pointer}.companion-bubble form{display:flex;gap:5px;margin-top:12px}.companion-bubble input{min-width:0;flex:1;font-size:12px;padding:10px;border:1px solid #d4ddcf;border-radius:8px}.companion-bubble form button{background:#193d36;color:white;border:0;border-radius:8px;width:34px}.companion-bubble small{display:block;font-size:9px;color:#6b786c;margin-top:9px}.settings-page a,footer a{color:#285b44}.companion input:focus-visible,.companion button:focus-visible{outline:2px solid #408861;outline-offset:3px}@keyframes pet-breathe{50%{transform:translateY(-5px) rotate(3deg)}}@media(prefers-reduced-motion:reduce){.companion-pet .goblin{animation:none}}@media(max-width:600px){.companion{right:12px;bottom:72px}.companion-pet .goblin{width:55px;height:55px}.companion-bubble{width:min(290px,calc(100vw - 24px));padding:14px}.companion-pet span{font-size:10px}}
+.ship-companion {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: none;
+}
+.ship-companion > * {
+  pointer-events: auto;
+}
+.companion-pet {
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 0;
+  cursor: pointer;
+}
+.companion-pet .goblin {
+  width: 76px;
+  height: 76px;
+  filter: drop-shadow(0 8px 10px #193d3625);
+  animation: pet-breathe 4s ease-in-out infinite;
+}
+.companion-pet span {
+  display: flex;
+  gap: 4px;
+  background: #193d36;
+  color: #fffdf6;
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.companion-bubble {
+  width: 300px;
+  background: #fffdf6;
+  border: 1px solid #d4ddcf;
+  border-radius: 20px 20px 4px 20px;
+  padding: 18px;
+  box-shadow: 0 16px 50px #193d3620;
+}
+.companion-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.companion-head strong {
+  font-size: 13px;
+  flex: 1;
+}
+.companion-head button {
+  border: 0;
+  background: transparent;
+  color: #193d36;
+  padding: 4px;
+  cursor: pointer;
+}
+.companion-bubble p {
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 12px 0;
+  max-height: 185px;
+  overflow: auto;
+  white-space: pre-line;
+}
+.companion-action {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: #edf3e8;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #193d36;
+  font-size: 12px;
+  cursor: pointer;
+}
+.companion-bubble form {
+  display: flex;
+  gap: 5px;
+  margin-top: 12px;
+}
+.companion-bubble input {
+  min-width: 0;
+  flex: 1;
+  font-size: 12px;
+  padding: 10px;
+  border: 1px solid #d4ddcf;
+  border-radius: 8px;
+}
+.companion-bubble form button {
+  background: #193d36;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  width: 34px;
+}
+.companion-bubble small {
+  display: block;
+  font-size: 9px;
+  color: #6b786c;
+  margin-top: 9px;
+}
+.settings-page a,
+footer a {
+  color: #285b44;
+}
+.ship-companion input:focus-visible,
+.ship-companion button:focus-visible {
+  outline: 2px solid #408861;
+  outline-offset: 3px;
+}
+@keyframes pet-breathe {
+  50% {
+    transform: translateY(-5px) rotate(3deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .companion-pet .goblin {
+    animation: none;
+  }
+}
+@media (max-width: 600px) {
+  .ship-companion {
+    right: 12px;
+    bottom: 72px;
+  }
+  .companion-pet .goblin {
+    width: 55px;
+    height: 55px;
+  }
+  .companion-bubble {
+    width: min(290px, calc(100vw - 24px));
+    padding: 14px;
+  }
+  .companion-pet span {
+    font-size: 10px;
+  }
+}
+
+/* ui-ux-pro-max: unobscured focus, readable controls, contained overlays. */
+html {
+  scroll-padding-bottom: 130px;
+}
+.ship-companion {
+  isolation: isolate;
+  color: var(--ink);
+}
+.companion-bubble {
+  max-height: calc(100dvh - 160px);
+  overflow: auto;
+  text-align: left;
+}
+.companion-head button {
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 8px;
+}
+.companion-head button:hover {
+  background: var(--soft);
+}
+.companion-bubble small {
+  font-size: 11px;
+  color: #53674f;
+}
+.companion-bubble p {
+  color: #465c4d;
+}
+.companion-bubble form button {
+  min-width: 38px;
+}
+.companion-bubble input {
+  font-size: 14px;
+}
+.settings-page .connection-grid {
+  align-items: stretch;
+}
+.settings-page .panel {
+  padding: 26px;
+}
+.settings-page .pill {
+  margin-bottom: 14px;
+}
+.settings-page .panel p {
+  color: #54665c;
+}
+.settings-page .panel h2 {
+  font-size: 19px;
+  margin-bottom: 14px;
+}
+.settings-page .panel .primary,
+.settings-page .panel .secondary {
+  min-height: 44px;
+}
+.page-content {
+  padding-bottom: 130px;
+}
+@media (max-width: 600px) {
+  .companion-head button {
+    min-width: 36px;
+    min-height: 36px;
+  }
+  .ship-companion {
+    right: 12px;
+    bottom: calc(74px + env(safe-area-inset-bottom, 0px));
+  }
+  .companion-bubble {
+    max-height: calc(100dvh - 200px);
+  }
+  .settings-page .panel {
+    padding: 20px;
+  }
+  .page-content {
+    padding-bottom: 170px;
+  }
+  .companion-pet span {
+    font-size: 11px;
+  }
+}

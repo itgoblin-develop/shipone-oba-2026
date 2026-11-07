@@ -44,9 +44,9 @@ import { initialState, demoPlan } from "./data";
 import { Goblin, Modal, Empty, Source, time } from "./components";
 import Settings from "./Settings";
 import Review from "./Review";
-import { nativeDesktop } from './web-api';
-import Companion from './Companion';
-import WebSettings from './WebSettings';
+import { nativeDesktop } from "./web-api";
+import Companion from "./Companion";
+import WebSettings from "./WebSettings";
 
 type Tab = "today" | "tasks" | "review" | "history" | "settings";
 const asLocal = (s: string) => {
@@ -203,7 +203,8 @@ export default function App() {
         } as PlanResult;
       else if (useAI)
         plan = await window.shipone!.plan({
-          feasibleTasks: ranked.slice(0,20).map((r: { task: Task }) => r.task),
+          feasibleTasks: ranked.slice(0, 20).map((r: { task: Task }) => r.task),
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           slots,
           maxMinutes: longest,
           energy: state.energy,
@@ -305,21 +306,22 @@ export default function App() {
     setBusy(true);
     setError("");
     try {
-      const r = sample && mission.planSource === '체험 안내'
-        ? {
-            suggestion:
-              "현재 완료 조건은 유지해요. 먼저 빠진 사전 신청 안내를 한 문장으로 추가한 뒤 다시 검증해보세요.",
-            source: "체험 안내",
-          }
-        : await window.shipone!.replan({
-            mission: {
-              title: mission.title,
-              criteria: mission.criteria,
-              steps: mission.steps,
-            },
-            blocker: draft,
-            elapsedMinutes: Math.floor(elapsed / 60),
-          });
+      const r =
+        sample && mission.planSource === "체험 안내"
+          ? {
+              suggestion:
+                "현재 완료 조건은 유지해요. 먼저 빠진 사전 신청 안내를 한 문장으로 추가한 뒤 다시 검증해보세요.",
+              source: "체험 안내",
+            }
+          : await window.shipone!.replan({
+              mission: {
+                title: mission.title,
+                criteria: mission.criteria,
+                steps: mission.steps,
+              },
+              blocker: draft,
+              elapsedMinutes: Math.floor(elapsed / 60),
+            });
       setSuggestion(r.suggestion);
       updateMission({
         ...mission,
@@ -441,7 +443,11 @@ export default function App() {
               <SettingsIcon size={18} />
             </button>
             <span className={"mode-badge " + (sample ? "demo" : "")}>
-              {sample ? "DEMO · 샘플 데이터" : desktop ? "DESKTOP · 실제 작업" : "WEB · 내 작업"}
+              {sample
+                ? "DEMO · 샘플 데이터"
+                : desktop
+                  ? "DESKTOP · 실제 작업"
+                  : "WEB · 내 작업"}
             </span>
             {true ? (
               <button
@@ -465,7 +471,9 @@ export default function App() {
             <div className="demo-banner">
               <Sparkles size={16} />
               <span>
-                <strong>샘플 데이터로 바로 시작하세요.</strong> AI 추천은 실제 OpenAI 호출입니다. 무료로 흐름만 살펴보려면 ‘샘플 시나리오 체험’을 선택하세요.
+                <strong>샘플 데이터로 바로 시작하세요.</strong> AI 추천은 실제
+                OpenAI 호출입니다. 무료로 흐름만 살펴보려면 ‘샘플 시나리오
+                체험’을 선택하세요.
               </span>
               <button onClick={() => setModal("reset")}>
                 체험 초기화
@@ -564,15 +572,17 @@ export default function App() {
                         오늘의 하나 골라줘
                         <ArrowRight size={18} />
                       </button>
-                      {(
+                      {
                         <button
                           className="text-btn local-plan"
                           disabled={busy}
                           onClick={() => recommend(false)}
                         >
-                          {sample ? '샘플 시나리오 체험 · API 사용 없음' : 'API 없이 시간·우선순위로 추천'}
+                          {sample
+                            ? "샘플 시나리오 체험 · API 사용 없음"
+                            : "API 없이 시간·우선순위로 추천"}
                         </button>
-                      )}
+                      }
                       <div className="mission-foot">
                         <span>
                           <ShieldCheck size={15} />
@@ -1241,7 +1251,21 @@ export default function App() {
               )}
             </>
           )}
-          {tab === "settings" && !desktop && <WebSettings notify={setToast} onEvents={(events,at,source)=>setState(s=>({...s,events:[...s.events.filter(e=>e.source!==source),...events],calendarSyncedAt:at}))}/>}
+          {tab === "settings" && !desktop && (
+            <WebSettings
+              notify={setToast}
+              onEvents={(events, at, source) =>
+                setState((s) => ({
+                  ...s,
+                  events: [
+                    ...s.events.filter((e) => e.source !== source),
+                    ...events,
+                  ],
+                  calendarSyncedAt: at,
+                }))
+              }
+            />
+          )}
           {tab === "settings" && desktop && (
             <Settings
               sample={sample}
@@ -1282,11 +1306,18 @@ export default function App() {
           )}
           <footer>
             ShipOne <span>Choose one. Prove it. Ship it.</span>
-            <small><a href="./pitch/">발표자료</a> · <a href="./video/">60초 영상</a> · OBA 2026</small>
+            <small>
+              <a href="./pitch/">발표자료</a> · <a href="./video/">60초 영상</a>{" "}
+              · OBA 2026
+            </small>
           </footer>
         </div>
       </main>
-      <Companion mission={mission} elapsed={elapsed} onOpen={()=>setTab(mission?.status==='review'?'review':'today')}/>
+      <Companion
+        mission={mission}
+        elapsed={elapsed}
+        onOpen={() => setTab(mission?.status === "review" ? "review" : "today")}
+      />
       {toast && (
         <div role="status" className="toast">
           <CheckCircle2 size={18} />
