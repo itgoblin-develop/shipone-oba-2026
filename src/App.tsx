@@ -50,10 +50,7 @@ import WebSettings from "./WebSettings";
 
 type Tab = "today" | "tasks" | "review" | "history" | "settings";
 const asLocal = (s: string) => {
-  const d = new Date(s);
-  return new Date(+d - d.getTimezoneOffset() * 60000)
-    .toISOString()
-    .slice(0, 16);
+  return new Date(+new Date(s) + 9 * 60 * 60000).toISOString().slice(0, 16);
 };
 function loadBrowser(key: string, fallback: AppState) {
   try {
@@ -204,7 +201,7 @@ export default function App() {
       else if (useAI)
         plan = await window.shipone!.plan({
           feasibleTasks: ranked.slice(0, 20).map((r: { task: Task }) => r.task),
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          timezone: "Asia/Seoul",
           slots,
           maxMinutes: longest,
           energy: state.energy,
@@ -503,6 +500,7 @@ export default function App() {
                       ? "SATURDAY, NOVEMBER 7 · 샘플 하루"
                       : new Date()
                           .toLocaleDateString("en-US", {
+                            timeZone: "Asia/Seoul",
                             weekday: "long",
                             month: "long",
                             day: "numeric",
@@ -926,7 +924,7 @@ export default function App() {
                     <details>
                       <summary>작업 가능한 시간 조정</summary>
                       <label>
-                        시작
+                        시작 (KST)
                         <input
                           type="datetime-local"
                           value={asLocal(state.windowStart)}
@@ -935,14 +933,14 @@ export default function App() {
                               setState((s) => ({
                                 ...s,
                                 windowStart: new Date(
-                                  e.target.value,
+                                  `${e.target.value}+09:00`,
                                 ).toISOString(),
                               }));
                           }}
                         />
                       </label>
                       <label>
-                        종료
+                        종료 (KST)
                         <input
                           type="datetime-local"
                           value={asLocal(state.windowEnd)}
@@ -951,7 +949,7 @@ export default function App() {
                               setState((s) => ({
                                 ...s,
                                 windowEnd: new Date(
-                                  e.target.value,
+                                  `${e.target.value}+09:00`,
                                 ).toISOString(),
                               }));
                           }}
@@ -1055,6 +1053,7 @@ export default function App() {
                         마지막 읽기{" "}
                         {new Date(state.calendarSyncedAt).toLocaleString(
                           "ko-KR",
+                          { timeZone: "Asia/Seoul" },
                         )}
                         {now - +new Date(state.calendarSyncedAt) > 15 * 60000 &&
                           " · 새 일정이 있다면 다시 읽어주세요."}
@@ -1134,7 +1133,9 @@ export default function App() {
                 {state.syncedAt && (
                   <small>
                     마지막 읽기{" "}
-                    {new Date(state.syncedAt).toLocaleString("ko-KR")}
+                    {new Date(state.syncedAt).toLocaleString("ko-KR", {
+                      timeZone: "Asia/Seoul",
+                    })}
                   </small>
                 )}
               </section>
@@ -1217,7 +1218,9 @@ export default function App() {
                       <div>
                         <div className="receipt-kicker">
                           {r.mode} ·{" "}
-                          {new Date(r.completedAt).toLocaleDateString("ko-KR")}
+                          {new Date(r.completedAt).toLocaleDateString("ko-KR", {
+                            timeZone: "Asia/Seoul",
+                          })}
                         </div>
                         <h2>{r.title}</h2>
                         <p>
@@ -1428,7 +1431,10 @@ export default function App() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              if (new Date(eventForm.end) <= new Date(eventForm.start)) {
+              if (
+                new Date(`${eventForm.end}+09:00`) <=
+                new Date(`${eventForm.start}+09:00`)
+              ) {
                 setError("일정 종료는 시작보다 늦어야 합니다.");
                 return;
               }
@@ -1439,8 +1445,8 @@ export default function App() {
                   {
                     id: uid(),
                     title: eventForm.title,
-                    start: new Date(eventForm.start).toISOString(),
-                    end: new Date(eventForm.end).toISOString(),
+                    start: new Date(`${eventForm.start}+09:00`).toISOString(),
+                    end: new Date(`${eventForm.end}+09:00`).toISOString(),
                     source: "manual",
                   },
                 ],
@@ -1467,7 +1473,7 @@ export default function App() {
               />
             </label>
             <label>
-              시작
+              시작 (KST)
               <input
                 type="datetime-local"
                 required
@@ -1478,7 +1484,7 @@ export default function App() {
               />
             </label>
             <label>
-              종료
+              종료 (KST)
               <input
                 type="datetime-local"
                 required
@@ -1721,7 +1727,9 @@ export default function App() {
           <h3>{selectedReceipt.title}</h3>
           <p>
             {selectedReceipt.mode} ·{" "}
-            {new Date(selectedReceipt.completedAt).toLocaleString("ko-KR")}
+            {new Date(selectedReceipt.completedAt).toLocaleString("ko-KR", {
+              timeZone: "Asia/Seoul",
+            })}
           </p>
           {selectedReceipt.checks.map((c) => (
             <div className="receipt-check" key={c.criterionId}>

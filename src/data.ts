@@ -1,8 +1,7 @@
 import type { AppState } from "./types";
 export function initialState(sample = false): AppState {
-  const start = new Date();
-  if (sample) start.setHours(13, 0, 0, 0);
-  else start.setSeconds(0, 0);
+  const start = sample ? new Date("2026-11-07T13:00:00+09:00") : new Date();
+  start.setSeconds(0, 0);
   const at = (m: number) => new Date(+start + m * 60000).toISOString();
   return {
     version: 1,
